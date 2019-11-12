@@ -15,7 +15,7 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 import recommonmark
-import sphinx_markdown_tables
+# import sphinx_markdown_tables
 from recommonmark.transform import AutoStructify
 
 # -- Project information -----------------------------------------------------
@@ -40,7 +40,7 @@ source_suffix = ['.rst', '.md']
 
 extensions = [
     'recommonmark',
-    'sphinx_markdown_tables',
+    # 'sphinx_markdown_tables',
 ]
 
 
@@ -65,9 +65,9 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-def setup(app):
-    app.add_config_value('recommonmark_config', {
-            'url_resolver': lambda url: github_doc_root + url,
-            'auto_toc_tree_section': 'Contents',
-            }, True)
-    app.add_transform(AutoStructify)
+# def setup(app):
+#     app.add_config_value('recommonmark_config', {
+#             'url_resolver': lambda url: github_doc_root + url,
+#             'auto_toc_tree_section': 'Contents',
+#             }, True)
+#     app.add_transform(AutoStructify)
