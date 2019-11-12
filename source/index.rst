@@ -8,11 +8,9 @@ Welcome to WJSBridge's documentation!
 
 .. toctree::
    :maxdepth: 2
-
-   WJSBridge.rst
-
    :caption: Contents:
    
+   WJSBridge.rst
 
 Indices and tables
 ==================
