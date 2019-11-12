@@ -1,81 +1,262 @@
-WJSBridge 方便 Javascript 与 OC 之前相互调用、传值、回调。
+WJSBridge
+=========
 
-使用 pod ‘WJSBridge’
+方便 Javascript 与 OC 之前相互调用、传值、回调。 # 使用 pod ‘WJSBridge’
+# JavaScript 与 iOS 交互
 
-JavaScript 与 iOS 交互 iOS 使用 UIWebview 加载 H5 JavaScript调用 iOS
-方法 walletBridge(method, params, callBack) 举例说明:JavaScript
-调用objective-C(OC)方法
+iOS 使用 UIWebview 加载 H5
+--------------------------
+
+JavaScript调用 iOS 方法
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: javascript
+
+   walletBridge(method, params, callBack)
+
+举例说明:JavaScript 调用objective-C(OC)方法
 
 1.普通方法
 
-walletBridge(‘download’) OC实现方法
+.. code:: javascript
 
--(void)download{} 2.带参数方法
+   walletBridge('download')
 
-walletBridge(‘share’, { title:‘title’, context: ‘context’, url: ‘url’ })
 OC实现方法
 
--  (void)share:(NSDictionary \*)param {} 3.带参数及回调函数
+.. code:: objectivec
 
-walletBridge(“login”, { userName:‘nanli’, password:‘qwe’ },
-function(data){ console.log(‘login success:’+ data); }) OC 实现方法
+   -(void)download{}
 
--  (void)login:(NSDictionary \*)param {} 回调函数
+2.带参数方法
 
-[self.jsBridge executCallBack:@[@“a little word”]]; OC 调用 JavaScript
-方法 - (void)executJs:(NSString *)method param:(NSArray*)param; iOS使用
-WKWebView 加载H5 JavaScript 调用 iOS方法 WJSBridge.walletCall(method,
-param, callBack) 1.普通方法
+.. code:: javascript
 
-WJSBridge.walletCall(‘download’); OC 实现方法
+   walletBridge('share', {
+       title:'title',
+       context: 'context',
+       url: 'url'
+   })
 
--(void)download{} 2.带参数的方法
+OC实现方法
 
-WJSBridge.walletCall(‘share’, { title:‘title’, context: ‘context’, url:
-‘url’ }) OC 实现方法
+.. code:: objectivec
 
--  (void)share:(NSDictionary \*)param {} 3.带参数及回调函数
+   - (void)share:(NSDictionary *)param {}
 
-WJSBridge.walletCall(“login”, { userName:‘nanli’, password:‘qwe’ },
-function(data){ console.log(‘login success:’+ data); }) OC 实现方法
+3.带参数及回调函数
 
--  (void)login:(NSDictionary \*)param :(walletCallBlock)callBlock; OC
-   调用 JavaScript方法
--  (void)executJs:(NSString *)method params:(NSString*)params
-   completed:(void(^)(id data, NSError \*error))completed; 核心类
-   WJSBridge @interface WJSBridge : NSObject
+.. code:: javascript
 
-+(instancetype)regist:(UIWebView *)webView target:(NSObject*)target;
+   walletBridge("login", {
+           userName:'nanli',
+           password:'qwe'
+           }, function(data){
+                console.log('login success:'+ data);
+         })
 
-/*\* native 主动调用 JS
+OC 实现方法
 
-@param method JS 方法 @param param native 传给 JS 参数 */ -
-(void)executJs:(NSString*)method param:(NSArray \*)param;
+.. code:: objectivec
 
-/*\* 回调, native 调用 JS
+   - (void)login:(NSDictionary *)param {}
 
-@param param native 传给 JS 参数 */ -
-(void)executCallBack:(NSArray*)param;
+回调函数
 
-@end WJSBridgeHandler typedef void(^walletCallBlock) (id response);
+.. code:: objectivec
 
-@interface WJSBridgeHandler : NSObject /*\* */ @property (nonatomic,
-strong) WKWebView*\ webView;
+   [self.jsBridge executCallBack:@[@"a little word"]];
 
--  (instancetype)regist:(WKWebViewConfiguration *)config
-   target:(NSObject*)target;
+OC 调用 JavaScript 方法
+~~~~~~~~~~~~~~~~~~~~~~~
 
-/*\* native 调用 JS 方法
+.. code:: objectivec
 
-@param method JS响应的方法名 @param params JS接收参数 @param completed
-返回结果 */ - (void)executJs:(NSString*)method params:(NSString *)params
-completed:(void(^)(id data, NSError*\ error))completed;; @end
-WJSBridge.js var WJSBridge = { walletCall: function(method, params,
-callBack) { var message; if (!callBack) { message = {‘method’: method,
-‘params’: params};
-window.webkit.messageHandlers.WJSBridge.postMessage(message); }else {
-var callBackId = method+‘callBack’; message = {‘method’: method,
-‘params’: params, ‘callBack’: callBackId}; if
-(!WJSBridgeEvent._listeners[callBackId]) {
-WJSBridgeEvent.addEvent(callBackId, function (data){ callBack(data); })
-} window.webkit.messageHandlers.WJSBridge.postMessage(message); }
+   - (void)executJs:(NSString *)method param:(NSArray *)param;
+
+iOS使用 WKWebView 加载H5
+------------------------
+
+JavaScript 调用 iOS方法
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: javascript
+
+   WJSBridge.walletCall(method, param, callBack)
+
+1.普通方法
+
+.. code:: javascript
+
+   WJSBridge.walletCall('download');
+
+OC 实现方法
+
+.. code:: objectivec
+
+   -(void)download{}
+
+2.带参数的方法
+
+.. code:: javascript
+
+   WJSBridge.walletCall('share', {
+       title:'title',
+       context: 'context',
+       url: 'url'
+   })
+
+OC 实现方法
+
+.. code:: objectivec
+
+   - (void)share:(NSDictionary *)param {}
+
+3.带参数及回调函数
+
+.. code:: javascript
+
+   WJSBridge.walletCall("login", {
+           userName:'nanli',
+           password:'qwe'
+           }, function(data){
+                console.log('login success:'+ data);
+         })
+
+OC 实现方法
+
+.. code:: objectivec
+
+   - (void)login:(NSDictionary *)param :(walletCallBlock)callBlock;
+
+OC 调用 JavaScript方法
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: objectivec
+
+   - (void)executJs:(NSString *)method params:(NSString *)params completed:(void(^)(id data, NSError *error))completed;
+
+核心类
+------
+
+WJSBridge
+~~~~~~~~~
+
+.. code:: objectivec
+
+   @interface WJSBridge : NSObject
+
+   +(instancetype)regist:(UIWebView *)webView target:(NSObject *)target;
+
+   /**
+    native 主动调用 JS
+
+    @param method  JS 方法
+    @param param native 传给 JS 参数
+    */
+   - (void)executJs:(NSString *)method param:(NSArray *)param;
+
+   /**
+    回调, native 调用 JS
+
+    @param param native 传给 JS 参数
+    */
+   - (void)executCallBack:(NSArray *)param;
+
+   @end
+
+WJSBridgeHandler
+~~~~~~~~~~~~~~~~
+
+.. code:: objectivec
+
+   typedef void(^walletCallBlock) (id response);
+
+   @interface WJSBridgeHandler : NSObject<WKScriptMessageHandler>
+   /** */
+   @property (nonatomic, strong) WKWebView *webView;
+
+   + (instancetype)regist:(WKWebViewConfiguration *)config target:(NSObject *)target;
+
+   /**
+    native 调用 JS 方法
+
+    @param method JS响应的方法名
+    @param params  JS接收参数
+    @param completed 返回结果
+    */
+   - (void)executJs:(NSString *)method params:(NSString *)params completed:(void(^)(id data, NSError *error))completed;;
+   @end
+
+WJSBridge.js
+~~~~~~~~~~~~
+
+.. code:: javascript
+
+   var WJSBridge = {
+       walletCall: function(method, params, callBack) {
+           var message;
+           if (!callBack) {
+               message = {'method': method, 'params': params};
+               window.webkit.messageHandlers.WJSBridge.postMessage(message);
+           }else {
+               var callBackId = method+'callBack';
+               message = {'method': method, 'params': params, 'callBack': callBackId};
+               if (!WJSBridgeEvent._listeners[callBackId]) {
+                   WJSBridgeEvent.addEvent(callBackId, function (data){
+                       callBack(data);
+                   })
+               }
+               window.webkit.messageHandlers.WJSBridge.postMessage(message);
+           }
+       },
+       
+       walletCallBack: function (callBackId, data) {
+           WJSBridgeEvent.fireEvent(callBackId, data);
+       }
+   };
+
+   var WJSBridgeEvent = {
+       _listeners:{},
+
+       addEvent: function(type, fn) {
+           if (typeof this._listeners[type] === "undefined") {
+               this._listeners[type] = [];
+           }
+           if (typeof fn === "function") {
+               this._listeners[type].push(fn);
+           }
+           return this;
+       },
+
+       fireEvent: function (type, params) {
+           var arrayEvent = this._listeners[type];
+           if (arrayEvent instanceof Array) {
+               for (var i = 0, len = arrayEvent.length; i<len; i+=1) {
+                   if (typeof arrayEvent[i] === "function") {
+                       arrayEvent[i](params);
+                   }
+               }
+           }
+           return this;
+       },
+
+       removeEvent: function (type, fn) {
+           var arrayEvent = this._listeners[type];
+           if (typeof type === "string" && arrayEvent instanceof Array) {
+               if (typeof fn === "function") {
+                   for (var i=0, length=arrayEvent.length; i<length; i+=1){
+                       if (arrayEvent[i] === fn){
+                           this._listeners[type].splice(i, 1);
+                           break;
+                       }
+                   }
+               } else {
+                   delete this._listeners[type];
+               }
+           }
+           
+           return this;
+       }
+
+   };
