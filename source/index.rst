@@ -10,7 +10,7 @@ Welcome to WJSBridge's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   WJSBridge.rst
+   WJSBridge
 
 Indices and tables
 ==================
