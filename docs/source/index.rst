@@ -8,11 +8,11 @@ Welcome to WJSBridge's documentation!
 
 .. toctree::
    :maxdepth: 2
-
+   :caption: Contents:
    
    ios钱包支付
 
-   :caption: Contents:
+   
     
 
 Indices and tables
